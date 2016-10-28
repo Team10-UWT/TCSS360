@@ -16,7 +16,7 @@ public class EasterEgg {
     public static final String PROMPT_STRING = "Enter the magic phrase: ";
     public static final String TRIG_WAR = "Easter Egg Triggered!";
     public static final String TEAM_NAME = "Team 1 0";
-    public static final String MEMBERS = "Sandeep Heera, ";//ADD YOUR NAME HERE
+    public static final String MEMBERS = "Sandeep Heera, Daniel Wood";//ADD YOUR NAME HERE
     
     /**
      * @param args the command line arguments
