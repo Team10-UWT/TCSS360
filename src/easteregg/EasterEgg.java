@@ -35,6 +35,7 @@ public class EasterEgg {
         System.out.println(TRIG_WAR);
         System.out.println(TEAM_NAME);
         System.out.println(MEMBERS);
+        c.close();
     }
     
 }
