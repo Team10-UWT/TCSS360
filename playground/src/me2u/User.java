@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package playground;
+package me2u;
 
 import java.io.Serializable;
 
@@ -66,4 +66,10 @@ public class User implements Serializable{
         System.out.println(myFirstName+", "+myPassword+", "+", "+mySecurityQuestion+", "+
         mySecurityAnswer+", "+myPoints+", "+myType);
     }
+
+    public String getUsername() {
+        return myUsername;
+    }
+    
+
 }
