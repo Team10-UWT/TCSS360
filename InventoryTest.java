@@ -29,7 +29,15 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
         
-        instance = new Inventory(items);
+        ArrayList<CarePackage> packList = new ArrayList<>();
+        ArrayList<Item> packItemList = new ArrayList<>();
+        
+        CarePackage cPack = new CarePackage("Care 1", packItemList);
+        cPack.addItem(cannedFruit.getItemName(), cannedFruit.getItemType(),
+                      2, cannedFruit.getValue());
+        packList.add(cPack);
+        
+        instance = new Inventory(items, packList);
     }
 
     /**
@@ -194,7 +202,7 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
        
-        instance = new Inventory(items);
+        instance = new Inventory(items, null);
         
         Item jacket1 = new Item("Jacket", "Clothing", 2, 5, 40);
         Item shoes1 = new Item("Jordans", "Shoes", 1, 3, 75);
@@ -225,7 +233,7 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
        
-        instance = new Inventory(items);
+        instance = new Inventory(items, null);
         
         Item oj1 = new Item("Orange Juice", "Food", 15, 50, 5);
         Item cannedFruit1 = new Item("Canned Pineapple", "Food", 4, 6, 3);
