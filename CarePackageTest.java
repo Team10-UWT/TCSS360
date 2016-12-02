@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Sandeep Heera
+ * CarePackageTest.java
+ * J-Unit tests for the CarePackage class.
  */
-
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Sonny
+ * J-Unit tests for the CarePackage class.
+ * 
+ * @author Sandeep Heera
  */
 public class CarePackageTest {
     CarePackage instance;

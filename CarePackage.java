@@ -1,6 +1,11 @@
-
+/**
+ * Sandeep Heera
+ * CarePackage.java
+ * This class is a representation of a care package in Me2U's inventory.
+ */
 import java.util.ArrayList;
 import java.util.Iterator;
+
 /**
  * This class represents pre-defined care packages. These packages have a 
  * pre-determined number of items and are intended to be updated in the 
