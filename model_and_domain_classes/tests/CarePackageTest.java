@@ -15,8 +15,19 @@ import static org.junit.Assert.*;
 public class CarePackageTest {
     CarePackage instance;
     ArrayList<Item> itemList;
+    ArrayList<Item> inventoryList;
     
     public CarePackageTest() {
+        inventoryList = new ArrayList<>();
+        Item tomatoSoupI = new Item("Campbell's Tomato Soup", "Food", 90, 5, 4);
+        Item bandAidsI = new Item("Band-Aids", "Medical", 400, 50, 2);
+        Item beefJerkyI = new Item("Beef Jerky", "Food", 53, 40, 1);
+        Item flashLightI = new Item("Flash Light", "Other", 19, 10, 15);
+        inventoryList.add(tomatoSoupI);
+        inventoryList.add(bandAidsI);
+        inventoryList.add(beefJerkyI);
+        inventoryList.add(flashLightI);
+        
         itemList = new ArrayList<>();
         Item tomatoSoup = new Item("Campbell's Tomato Soup", "Food", 10, 0, 4);
         Item bandAids = new Item("Band-Aids", "Medical", 10, 0, 2);
@@ -29,7 +40,6 @@ public class CarePackageTest {
         itemList.add(flashLight);
         
         instance = new CarePackage("One Week Survival", itemList);
-        
         
         assertEquals(false, instance == null);
     }
@@ -107,8 +117,8 @@ public class CarePackageTest {
     @Test
     public void testSetQuantity() {
         System.out.println("setQuantity");
-        int newQuantity = 10;
-        instance.setQuantity(newQuantity);
+        int newQuantity = 5;
+        instance.setQuantity(inventoryList);
         assertEquals(newQuantity, instance.getQuantity());
     }
 
@@ -158,8 +168,10 @@ public class CarePackageTest {
         String itemType = "Food";
         int quantity = 19;
         int itemValue = 1;
-        instance.addItem(itemName, itemType, quantity, itemValue);
+        instance.addItem(itemName, itemType, quantity, itemValue,
+                         inventoryList);
         assertEquals(true, instance.itemExists(itemName));
+        instance.deleteItem("Jello", inventoryList);
     }
 
     /**
@@ -181,8 +193,12 @@ public class CarePackageTest {
     public void testDeleteItem() {
         System.out.println("deleteItem");
         String itemName = "Flash Light";
-        instance.deleteItem(itemName);
+        instance.deleteItem(itemName, inventoryList);
         assertEquals(false, instance.itemExists(itemName));
+        Item flashLight = new Item("Flash Light", "Other", 1, 0, 15);
+        instance.addItem(flashLight.getItemName(), flashLight.getItemType(),
+                         flashLight.getQuantity(), flashLight.getValue(),
+                         inventoryList);
     }
 
     /**
@@ -195,6 +211,7 @@ public class CarePackageTest {
         String newName = "Tomato Soup";
         instance.updateItemName(itemName, newName);
         assertEquals(newName, instance.getItem(newName).getItemName());
+        instance.updateItemName(newName, itemName);
     }
 
     /**
@@ -216,8 +233,8 @@ public class CarePackageTest {
     public void testUpdateItemQuantity() {
         System.out.println("updateItemQuantity");
         String itemName = "Beef Jerky";
-        int newQuantity = 40;
-        instance.updateItemQuantity(itemName, newQuantity);
+        int newQuantity = 9;
+        instance.updateItemQuantity(itemName, newQuantity, inventoryList);
         assertEquals(newQuantity, instance.getItem(itemName).getQuantity());
     }
 
@@ -232,5 +249,4 @@ public class CarePackageTest {
         instance.updateItemValue(itemName, newValue);
         assertEquals(newValue, instance.getItem(itemName).getValue());
     }
-    
 }

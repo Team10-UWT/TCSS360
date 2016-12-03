@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
  */
 public class InventoryTest {
     Inventory instance;
+    ArrayList<Item> items;
+    ArrayList<CarePackage> packList;
     
     public InventoryTest() {
-        ArrayList<Item> items = new ArrayList<Item>();
+        items = new ArrayList<>();
         Item jacket = new Item("Jacket", "Clothing", 2, 5, 40);
         Item shoes = new Item("Jordans", "Shoes", 1, 3, 75);
         Item oj = new Item("Orange Juice", "Food", 15, 50, 5);
@@ -29,12 +31,12 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
         
-        ArrayList<CarePackage> packList = new ArrayList<>();
+        packList = new ArrayList<>();
         ArrayList<Item> packItemList = new ArrayList<>();
         
         CarePackage cPack = new CarePackage("Care 1", packItemList);
         cPack.addItem(cannedFruit.getItemName(), cannedFruit.getItemType(),
-                      2, cannedFruit.getValue());
+                      3, cannedFruit.getValue(), items);
         packList.add(cPack);
         
         instance = new Inventory(items, packList);
@@ -242,5 +244,68 @@ public class InventoryTest {
         ArrayList<Item> result = instance.getItemsOfType(itemType);
         boolean test = result.contains(oj1) && result.contains(cannedFruit1);
         assertEquals(true, test);
+    }
+
+    /**
+     * Test of packageExists method, of class Inventory.
+     */
+    @Test
+    public void testPackageExists() {
+        System.out.println("packageExists");
+        String packageName = "Care 1";
+        boolean expResult = true;
+        boolean result = instance.packageExists(packageName);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPackage method, of class Inventory.
+     */
+    @Test
+    public void testGetPackage() {
+        System.out.println("getPackage");
+        String packageName = "Care 1";
+        CarePackage expResult = packList.get(0);
+        CarePackage result = instance.getPackage(packageName);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPackageQuantity method, of class Inventory.
+     */
+    @Test
+    public void testGetPackageQuantity() {
+        System.out.println("getPackageQuantity");
+        String packageName = "Care 1";
+        int expResult = 3;
+        instance.updateItemQuantity("Canned Pineapple", 9);
+        int result = instance.getPackageQuantity(packageName);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of updatePackages method, of class Inventory.
+     */
+    @Test
+    public void testUpdatePackages() {
+        System.out.println("updatePackages");
+        instance.updateItemName("Canned Pineapple", "Gourmet Pineapple");
+        String itemName = "Canned Pineapple";
+        Item updatedItem = instance.getItem("Gourmet Pineapple");
+        instance.updatePackages(itemName, updatedItem);
+        assertEquals(true, 
+        instance.getPackage("Care 1").itemExists("Gourmet Pineapple"));
+    }
+
+    /**
+     * Test of addPackage method, of class Inventory.
+     */
+    @Test
+    public void testAddPackage() {
+        System.out.println("addPackage");
+        CarePackage carePackage = new CarePackage("Care 2", items);
+        instance.addPackage(carePackage);
+        assertEquals(true, 
+                     instance.packageExists(carePackage.getPackageName()));
     }
 }
