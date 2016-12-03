@@ -4,7 +4,9 @@
  * This class is a representation of Me2U's physical inventory.
  */
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -39,6 +41,15 @@ public class Inventory implements java.io.Serializable{
     }
     
     /**
+     * Returns the package list.
+     * 
+     * @return arraylist with inventory packages
+     */
+    public ArrayList<CarePackage> getPackageList(){
+        return this.packageList;
+    }
+    
+    /**
      * Iterates through the item list and returns true if an item with the
      * same name as the parameter exists in inventory or false otherwise.
      * 
@@ -46,7 +57,7 @@ public class Inventory implements java.io.Serializable{
      * @return true if the item exists or false otherwise
      */
     public boolean itemExists(String itemName){
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         
         Item item;
         while(it.hasNext()){    //iterate through the list
@@ -67,7 +78,7 @@ public class Inventory implements java.io.Serializable{
      * @return the item that has the name as itemName or null otherwise
      */
     public Item getItem(String itemName){
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         Item item;
         
         while(it.hasNext()){    //iterate through the list
@@ -116,7 +127,7 @@ public class Inventory implements java.io.Serializable{
             Item item = new Item(itemName, itemType, quantity, optimalQuantity,
                                  itemValue);
             //add it to the item list
-            itemList.add(item);
+            this.itemList.add(item);
         }
     }
     
@@ -129,7 +140,7 @@ public class Inventory implements java.io.Serializable{
      */
     public void deleteItem(String itemName){
         if(itemExists(itemName)){
-            Iterator it = (Iterator) itemList.iterator();
+            Iterator it = (Iterator) this.itemList.iterator();
             Item item;
             
             while(it.hasNext()){    //iterate through the list to find the item
@@ -139,14 +150,14 @@ public class Inventory implements java.io.Serializable{
                     it.remove();    //remove item
                     
                     if(!this.packageList.isEmpty()){
-                        Iterator packIt =(Iterator) packageList.iterator();
+                        Iterator packIt =(Iterator) this.packageList.iterator();
                         CarePackage carePackage;
 
                         //traverse through the package list
                         while(packIt.hasNext()){
                             carePackage = (CarePackage) packIt.next();
                             if(carePackage.itemExists(itemName)){
-                                carePackage.deleteItem(itemName);
+                                carePackage.deleteItem(itemName, this.itemList);
                             }
                         }
                     }
@@ -199,6 +210,7 @@ public class Inventory implements java.io.Serializable{
             Item item = getItem(itemName);
             
             item.setQuantity(newQuantity);  //update the quantity
+            updatePackages(itemName, getItem(itemName));
         }
     }
     
@@ -244,7 +256,7 @@ public class Inventory implements java.io.Serializable{
     public ArrayList<Item> getNeeded(){
         ArrayList<Item> neededItems = new ArrayList<>();
         
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         Item item;
         double ratio;
         
@@ -273,7 +285,7 @@ public class Inventory implements java.io.Serializable{
     public ArrayList<Item> getItemsOfType(String itemType){
         ArrayList<Item> itemsOfType = new ArrayList<>();
         
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         Item item;
         
         while(it.hasNext()){    //iterate through the list to find the items
@@ -300,7 +312,7 @@ public class Inventory implements java.io.Serializable{
      * @return true if the care package exists or false otherwise
      */
     public boolean packageExists(String packageName){
-        Iterator it = (Iterator) packageList.iterator();
+        Iterator it = (Iterator) this.packageList.iterator();
         CarePackage carePackage;
         
         while(it.hasNext()){    //iterate through the package list
@@ -319,7 +331,7 @@ public class Inventory implements java.io.Serializable{
      * @return CarePackage with name packageName or null otherwise
      */
     public CarePackage getPackage(String packageName){
-        Iterator it = (Iterator) packageList.iterator();
+        Iterator it = (Iterator) this.packageList.iterator();
         CarePackage carePackage;
         
         while(it.hasNext()){    //iterate through the package list
@@ -356,7 +368,7 @@ public class Inventory implements java.io.Serializable{
      */
     public void updatePackages(String itemName, Item updatedItem){
         if(!this.packageList.isEmpty()){
-            Iterator it =(Iterator) packageList.iterator();
+            Iterator it =(Iterator) this.packageList.iterator();
             CarePackage carePackage;
             
             while(it.hasNext()){    //traverse through the package list
@@ -368,8 +380,99 @@ public class Inventory implements java.io.Serializable{
                                 updatedItem.getValue());
                     carePackage.updateItemName(itemName, 
                                 updatedItem.getItemName());
+                    carePackage.setPackageValue();
+                    carePackage.setQuantity(this.itemList);
                 }
             }
+        }
+    }
+    
+    /**
+     * Adds the care package to the package list provided it doesn't exist
+     * already.
+     * 
+     * @param carePackage care package to add to the package list
+     */
+    public void addPackage(CarePackage carePackage){
+        if(!packageExists(carePackage.getPackageName())){
+            this.packageList.add(carePackage);
+            carePackage.setQuantity(this.itemList);
+        }
+    }
+    
+    /**
+     * Removes the package with name packageName from the package list.
+     * 
+     * @param packageName name of the package to be removed
+     */
+    public void deletePackage(String packageName){
+        if(packageExists(packageName)){
+            Iterator it = (Iterator) this.packageList.iterator();
+            CarePackage carePackage;
+            
+            while(it.hasNext()){    //traverse through and find the item
+                carePackage = (CarePackage) it.next();
+                if(carePackage.getPackageName().equals(packageName)){
+                    it.remove();
+                }
+            }
+        }
+    }
+    
+    /**
+     * Serializes the Inventory object by writing both the itemList and 
+     * packageList to "items" and "packageList" respectively. These files 
+     * are intended to be deserialized during the startup routine of the
+     * Me2U application.
+     */
+    public void serializeInventory(){
+        try {
+                FileOutputStream fileOutI = new FileOutputStream("items");
+                ObjectOutputStream outI = new ObjectOutputStream(fileOutI);
+                outI.writeObject(this.itemList);
+                outI.writeObject(this.packageList);
+                outI.close();
+                fileOutI.close();
+                FileOutputStream fileOutP = new FileOutputStream("packageList");
+                ObjectOutputStream outP = new ObjectOutputStream(fileOutP);
+                outP.writeObject(this.packageList);
+                outP.close();
+                fileOutP.close();
+
+        } 
+        catch (FileNotFoundException e) {
+                e.printStackTrace();
+        } 
+        catch (IOException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Deserializes the stored Item and CarePackage arraylists and sets
+     * itemList and packageList equal to those deserialized lists.
+     */
+    public void deserializeInventory(){
+        try {
+           FileInputStream fileInI = new FileInputStream("items");
+           ObjectInputStream inI = new ObjectInputStream(fileInI);
+           this.itemList = (ArrayList<Item>) inI.readObject(); 
+           inI.close();
+           fileInI.close();
+           FileInputStream fileInP = new FileInputStream("packageList");
+           ObjectInputStream inP = new ObjectInputStream(fileInP);
+           this.packageList = (ArrayList<CarePackage>) inP.readObject(); 
+           inP.close();
+           fileInP.close();
+        } 
+        catch (ClassNotFoundException e) {
+           e.printStackTrace();
+        } 
+        catch (FileNotFoundException e) {
+           e.printStackTrace();
+        }
+        catch (IOException e) {
+           e.printStackTrace();
         }
     }
 }

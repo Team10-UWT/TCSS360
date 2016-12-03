@@ -5,6 +5,7 @@
  */
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * This class represents pre-defined care packages. These packages have a 
@@ -15,12 +16,14 @@ import java.util.Iterator;
  */
 public class CarePackage implements java.io.Serializable{
     private String packageName;
-    ArrayList<Item> itemList;
+    private ArrayList<Item> itemList;
     int quantity;
     int packageValue;
     
     /**
-     * Default constructor.
+     * Default constructor. Must call setPackageValue() and 
+     * setPackageQuantity() after the CarePackage object has been 
+     * initialized.
      * 
      * @param packageName name of the package
      * @param itemList items contained in the package
@@ -90,10 +93,37 @@ public class CarePackage implements java.io.Serializable{
      * Sets a new quantity for the package. Should be set by the Inventory 
      * class any time inventory changes or the item list for package changes.
      * 
-     * @param newQuantity new quantity of the package
+     * @param inventory arraylist of inventory items
      */
-    public void setQuantity(int newQuantity){
-        this.quantity = newQuantity;
+    public void setQuantity(ArrayList<Item> inventory){
+        if(!this.itemList.isEmpty() && !inventory.isEmpty()){
+            int[] available = new int[this.itemList.size()];
+            int min, i = 0;
+            Iterator it = (Iterator) this.itemList.iterator();
+            Iterator invIt;
+            Item item, invItem;
+            
+            while(it.hasNext()){    //iterate through the item list
+                item = (Item) it.next();
+                invIt = (Iterator) inventory.iterator();
+                while(invIt.hasNext()){ //iterate through inventory
+                    invItem = (Item) invIt.next();
+                    if(invItem.getItemName().equals(item.getItemName())){
+                        available[i++] = invItem.getQuantity() /
+                                         item.getQuantity();
+                    }
+                }
+            }
+            
+            min = available[0]; //first element
+            //determine the minimum
+            for(int j = 1;j < i;j++){
+                if(available[j] < min){
+                    min = available[j];
+                }
+            }
+            this.quantity = min;
+        }
     }
     
     /**
@@ -105,7 +135,7 @@ public class CarePackage implements java.io.Serializable{
     public void setPackageValue(){      
         if(!itemList.isEmpty()){
             int newPackageValue = 0;
-            Iterator it = (Iterator) itemList.iterator();
+            Iterator it = (Iterator) this.itemList.iterator();
             Item item;
 
             while(it.hasNext()){    //iterate through the list
@@ -125,7 +155,7 @@ public class CarePackage implements java.io.Serializable{
      * @return true if the item exists or false otherwise
      */
     public boolean itemExists(String itemName){
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         Item item;
         
         while(it.hasNext()){    //iterate through the list
@@ -145,7 +175,7 @@ public class CarePackage implements java.io.Serializable{
      * @return the item with name itemName if it exists or null otherwise
      */
     public Item getItem(String itemName){
-        Iterator it = (Iterator) itemList.iterator();
+        Iterator it = (Iterator) this.itemList.iterator();
         Item item;
         
         while(it.hasNext()){    //iterate through the list
@@ -167,15 +197,19 @@ public class CarePackage implements java.io.Serializable{
      * @param itemType type of the item
      * @param quantity quantity of the item in this package
      * @param itemValue value of the item
+     * @param inventory current inventory
      */
     public void addItem(String itemName, String itemType, int quantity,
-                        int itemValue){
+                        int itemValue, ArrayList<Item> inventory){
         if(!itemExists(itemName)){
             //create new item
             Item item = new Item(itemName, itemType, quantity, 0,
                                  itemValue);
             //add it to the item list
-            itemList.add(item);
+            this.itemList.add(item);
+            
+            //update quantity
+            setQuantity(inventory);
         }
     }
     
@@ -199,10 +233,11 @@ public class CarePackage implements java.io.Serializable{
      * Deletes the item with the same name as the parameter provided it exists.
      * 
      * @param itemName name of the item to be deleted
+     * @param inventory current inventory
      */
-    public void deleteItem(String itemName){
+    public void deleteItem(String itemName, ArrayList<Item> inventory){
         if(itemExists(itemName)){
-            Iterator it = (Iterator) itemList.iterator();
+            Iterator it = (Iterator) this.itemList.iterator();
             Item item;
             
             while(it.hasNext()){    //iterate through the list to find the item
@@ -210,6 +245,7 @@ public class CarePackage implements java.io.Serializable{
                 
                 if(item.getItemName().equals(itemName)){
                     it.remove();    //remove item
+                    setQuantity(inventory);
                 }
             }
         }
@@ -251,12 +287,15 @@ public class CarePackage implements java.io.Serializable{
      * 
      * @param itemName name of the item to be updated in the package
      * @param newQuantity new quantity of the item
+     * @param inventory current inventory
      */
-    public void updateItemQuantity(String itemName, int newQuantity){
+    public void updateItemQuantity(String itemName, int newQuantity,
+                                   ArrayList<Item> inventory){
         if(itemExists(itemName)){   //if the item exists
             Item item = getItem(itemName);
             
             item.setQuantity(newQuantity);  //update the quantity
+            setQuantity(inventory);
         }
     }
     
@@ -273,5 +312,42 @@ public class CarePackage implements java.io.Serializable{
             
             item.setValue(newValue);  //update the value
         }
+    }
+    
+    /**
+     * Compares the input object to this care package and determines if they 
+     * are the same.
+     * 
+     * @param toCompare object to compare with
+     * @return true if the care packages are the same or false otherwise
+     */
+    @Override
+    public boolean equals(Object toCompare){
+        if(!(toCompare instanceof CarePackage)){
+            return false;
+        }
+        else{
+            CarePackage carePackage = (CarePackage) toCompare;
+            if(this.packageName.equals(carePackage.getPackageName()) &&
+               this.itemList.equals(carePackage.getItemList()) &&
+               this.quantity == carePackage.getQuantity() &&
+               this.packageValue == carePackage.getPackageValue()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    
+    /**
+     * Returns a hash code for this care package.
+     * 
+     * @return hash code for this object
+     */
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.packageName, this.itemList, this.quantity,
+                            this.packageValue);
     }
 }
