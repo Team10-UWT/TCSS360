@@ -3,6 +3,7 @@
  * InventoryTest.java
  * J-Unit tests for the Inventory class.
  */
+import model.*;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Sandeep Heera
  * Inventory.java
