@@ -28,6 +28,15 @@ public class Inventory implements java.io.Serializable{
     
     /**
      * Default constructor.
+     */
+    public Inventory(){
+        this.itemList = new ArrayList<>();
+        this.packageList = new ArrayList<>();
+    }
+    
+    /**
+     * Parameterized constructor. Used for testing and to create initial 
+     * serializable files.
      * 
      * @param itemList arraylist of items in inventory
      * @param packageList arraylist of CarePackages in inventory
