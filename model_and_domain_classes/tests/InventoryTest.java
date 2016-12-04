@@ -3,6 +3,7 @@
  * InventoryTest.java
  * J-Unit tests for the Inventory class.
  */
+import java.io.File;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -307,5 +308,69 @@ public class InventoryTest {
         instance.addPackage(carePackage);
         assertEquals(true, 
                      instance.packageExists(carePackage.getPackageName()));
+    }
+
+    /**
+     * Test of getPackageList method, of class Inventory.
+     */
+    @Test
+    public void testGetPackageList() {
+        System.out.println("getPackageList");
+        ArrayList<CarePackage> expResult = packList;
+        ArrayList<CarePackage> result = instance.getPackageList();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of deletePackage method, of class Inventory.
+     */
+    @Test
+    public void testDeletePackage() {
+        System.out.println("deletePackage");
+        String packageName = packList.get(0).getPackageName();
+        CarePackage pack = packList.get(0);
+        instance.deletePackage(packageName);
+        boolean expResult = false;
+        assertEquals(expResult, instance.packageExists(packageName));
+        instance.addPackage(pack);
+    }
+
+    /**
+     * Test of serializeInventory method, of class Inventory.
+     */
+    @Test
+    public void testSerializeInventory() {
+        System.out.println("serializeInventory");
+        instance.serializeInventory();
+        boolean expResult = true;
+        File f = new File("items");
+        assertEquals(expResult, f.exists());
+    }
+
+    /**
+     * Test of deserializeInventory method, of class Inventory.
+     */
+    @Test
+    public void testDeserializeInventory() {
+        System.out.println("deserializeInventory");
+        instance = null;
+        ArrayList<Item> itemsList = new ArrayList<>();
+        ArrayList<CarePackage> packages = new ArrayList<>();
+        instance = new Inventory(itemsList, packages);
+        instance.deserializeInventory();
+        boolean expResult = true;
+        assertEquals(expResult, instance.getItemList().equals(items) && 
+                     instance.getPackageList().equals(packList));
+    }
+
+    /**
+     * Test of getItemList method, of class Inventory.
+     */
+    @Test
+    public void testGetItemList() {
+        System.out.println("getItemList");
+        ArrayList<Item> expResult = items;
+        ArrayList<Item> result = instance.getItemList();
+        assertEquals(expResult, result);
     }
 }

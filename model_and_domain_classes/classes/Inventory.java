@@ -41,6 +41,15 @@ public class Inventory implements java.io.Serializable{
     }
     
     /**
+     * Returns the item list.
+     * 
+     * @return arraylist with inventory items
+     */
+    public ArrayList<Item> getItemList(){
+        return this.itemList;
+    }
+    
+    /**
      * Returns the package list.
      * 
      * @return arraylist with inventory packages
