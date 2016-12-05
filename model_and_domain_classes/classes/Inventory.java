@@ -53,7 +53,7 @@ public class Inventory implements java.io.Serializable{
      * @param inv Inventory object to be copied
      */
     public Inventory(Inventory inv){
-        this(inv.getItemList(), inv.getPackageList());
+        this(inv.copyItemList(), inv.copyPackageList());
     }
     
     /**
@@ -66,12 +66,45 @@ public class Inventory implements java.io.Serializable{
     }
     
     /**
+     * Returns a deep copy of the item list.
+     * 
+     * @return deep copy of itemList
+     */
+    public ArrayList<Item> copyItemList(){
+        ArrayList<Item> items = new ArrayList<>();
+        
+        for(int i = 0;i < this.itemList.size();i++){
+            Item itemCopy = new Item(this.itemList.get(i));
+            items.add(itemCopy);
+        }
+        return items;
+    }
+    
+    /**
      * Returns the package list.
      * 
      * @return arraylist with inventory packages
      */
     public ArrayList<CarePackage> getPackageList(){
         return this.packageList;
+    }
+    
+    /**
+     * Returns a deep copy of the package list.
+     * 
+     * @return deep copy of packageList
+     */
+    public ArrayList<CarePackage> copyPackageList(){
+        ArrayList<CarePackage> packages = new ArrayList<>();
+        
+        for(int i = 0;i < this.packageList.size();i++){
+            CarePackage carePackageCopy = 
+                        new CarePackage(
+                        this.packageList.get(i).getPackageName(),
+                        this.packageList.get(i).copyItemList());
+            packages.add(carePackageCopy);
+        }
+        return packages;
     }
     
     /**
