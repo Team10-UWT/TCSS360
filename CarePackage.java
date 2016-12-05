@@ -51,7 +51,7 @@ public class CarePackage implements java.io.Serializable{
      * @param carePackage care package to be copied
      */
     public CarePackage(CarePackage carePackage){
-        this(carePackage.getPackageName(), carePackage.getItemList());
+        this(carePackage.getPackageName(), carePackage.copyItemList());
     }
     
     /**
@@ -69,6 +69,21 @@ public class CarePackage implements java.io.Serializable{
      */
     public ArrayList<Item> getItemList(){
         return this.itemList;
+    }
+    
+    /**
+     * Returns a deep copy of the item list.
+     * 
+     * @return deep copy of itemList
+     */
+    public ArrayList<Item> copyItemList(){
+        ArrayList<Item> items = new ArrayList<>();
+        
+        for(int i = 0;i < this.itemList.size();i++){
+            Item itemCopy = new Item(this.itemList.get(i));
+            items.add(itemCopy);
+        }
+        return items;
     }
     
     /**
