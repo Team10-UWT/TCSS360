@@ -38,9 +38,9 @@ public class InventoryTest {
         CarePackage cPack = new CarePackage("Care 1", packItemList);
         cPack.addItem(cannedFruit.getItemName(), cannedFruit.getItemType(),
                       3, cannedFruit.getValue(), items);
-        packList.add(cPack);
-        
         instance = new Inventory(items, packList);
+        instance.addPackage(cPack);
+        packList.add(cPack);
     }
 
     /**
@@ -205,7 +205,7 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
        
-        instance = new Inventory(items, null);
+        instance = new Inventory(items, packList);
         
         Item jacket1 = new Item("Jacket", "Clothing", 2, 5, 40);
         Item shoes1 = new Item("Jordans", "Shoes", 1, 3, 75);
@@ -223,7 +223,7 @@ public class InventoryTest {
     @Test
     public void testGetItemsOfType() {
         System.out.println("getItemsOfType");
-        ArrayList<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<>();
         Item jacket = new Item("Jacket", "Clothing", 2, 5, 40);
         Item shoes = new Item("Jordans", "Shoes", 1, 3, 75);
         Item oj = new Item("Orange Juice", "Food", 15, 50, 5);
@@ -236,7 +236,7 @@ public class InventoryTest {
         items.add(cannedFruit);
         items.add(sofa);
        
-        instance = new Inventory(items, null);
+        instance = new Inventory(items, packList);
         
         Item oj1 = new Item("Orange Juice", "Food", 15, 50, 5);
         Item cannedFruit1 = new Item("Canned Pineapple", "Food", 4, 6, 3);
@@ -317,7 +317,9 @@ public class InventoryTest {
     public void testGetPackageList() {
         System.out.println("getPackageList");
         ArrayList<CarePackage> expResult = packList;
+        System.out.println(packList.get(0));
         ArrayList<CarePackage> result = instance.getPackageList();
+        boolean test = true;
         assertEquals(expResult, result);
     }
 
@@ -372,5 +374,42 @@ public class InventoryTest {
         ArrayList<Item> expResult = items;
         ArrayList<Item> result = instance.getItemList();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of addCart method, of class Inventory.
+     */
+    @Test
+    public void testAddCart() {
+        System.out.println("addCart");
+        Cart cartToAdd = new Cart();
+        cartToAdd.addCarePackage(packList.get(0));
+        instance.addCart(cartToAdd);
+        boolean expResult = true;
+        assertEquals(expResult, 2 == packList.get(0).getQuantity());
+        Item oj = new Item("Orange Juice", "Food", 15, 50, 5);
+        cartToAdd.addItem(oj);
+        System.out.println("before:\n" + instance);
+        instance.addCart(cartToAdd);
+        System.out.println("after:\n" + instance);
+        assertEquals(expResult, 30 == instance.getQuantity(oj.getItemName()));
+    }
+
+    /**
+     * Test of subCart method, of class Inventory.
+     */
+    @Test
+    public void testSubCart() {
+        System.out.println("subCart");
+        Cart cartToSub = new Cart();
+        cartToSub.addCarePackage(packList.get(0));
+        Item shoes = new Item("Jordans", "Shoes", 1, 3, 75);
+        cartToSub.addItem(shoes);
+        System.out.println("before:\n" + instance);
+        instance.subCart(cartToSub);     
+        System.out.println("after:\n" + instance);
+        boolean expResult = true;
+        assertEquals(expResult, instance.getQuantity(shoes.getItemName()) == 0
+                     && instance.getQuantity("Canned Pineapple") == 0);
     }
 }

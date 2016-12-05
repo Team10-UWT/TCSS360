@@ -43,10 +43,17 @@ public class Inventory implements java.io.Serializable{
      */
     public Inventory(ArrayList<Item> itemList, 
                      ArrayList<CarePackage> packageList){
-        this.itemList = new ArrayList<>();
-        this.itemList = itemList;
-        this.packageList = new ArrayList<>();
-        this.packageList = packageList;
+        this.itemList = new ArrayList<>(itemList);
+        this.packageList = new ArrayList<>(packageList);
+    }
+    
+    /**
+     * Copy constructor.
+     * 
+     * @param inv Inventory object to be copied
+     */
+    public Inventory(Inventory inv){
+        this(inv.getItemList(), inv.getPackageList());
     }
     
     /**
@@ -415,6 +422,7 @@ public class Inventory implements java.io.Serializable{
         if(!packageExists(carePackage.getPackageName())){
             this.packageList.add(carePackage);
             carePackage.setQuantity(this.itemList);
+            carePackage.setPackageValue();
         }
     }
     
@@ -433,6 +441,92 @@ public class Inventory implements java.io.Serializable{
                 if(carePackage.getPackageName().equals(packageName)){
                     it.remove();
                 }
+            }
+        }
+    }
+    
+    /**
+     * Adds the cart to inventory. Iterates through the Item and CarePackage 
+     * arraylists of the cart to add them to inventory. This should be called
+     * anytime items need to be added to inventory (donor donates items or a
+     * recipient cancels their cart).
+     * 
+     * @param cartToAdd cart to add to inventory
+     */
+    public void addCart(Cart cartToAdd){
+        //go through the packages list
+        if(!cartToAdd.getCarePackages().isEmpty()){
+            Iterator it = (Iterator) cartToAdd.getCarePackages().iterator();
+            Iterator itemIt;
+            CarePackage carePackage;
+            
+            while(it.hasNext()){    //traverse the list of packages
+                carePackage = (CarePackage) it.next();
+                itemIt = (Iterator) carePackage.getItemList().iterator();
+                Item item;
+                
+                while(itemIt.hasNext()){    //traverse the list of items
+                    item = (Item) itemIt.next();
+                    updateItemQuantity(item.getItemName(), 
+                                       item.getQuantity() + 
+                                       getQuantity(item.getItemName()));
+                }
+            }
+        }
+        
+        //go through the individual items list
+        if(!cartToAdd.getItems().isEmpty()){
+            Iterator itemIt = (Iterator) cartToAdd.getItems().iterator();
+            Item item;
+            
+            while(itemIt.hasNext()){    //traverse the list of items
+                    item = (Item) itemIt.next();
+                    updateItemQuantity(item.getItemName(), 
+                                       item.getQuantity() + 
+                                       getQuantity(item.getItemName()));
+            }
+        }
+    }
+    
+    /**
+     * Subtracts the cart to inventory. Iterates through the Item and 
+     * CarePackage arraylists of the cart to subtract them from inventory. This
+     * should be called anytime items need to be subtracted from inventory
+     * (recipient hits checkout).
+     * 
+     * @param cartToSub cart to subtract from inventory
+     */
+    public void subCart(Cart cartToSub){
+        //go through the packages list
+        if(!cartToSub.getCarePackages().isEmpty()){
+            Iterator it = (Iterator) cartToSub.getCarePackages().iterator();
+            Iterator itemIt;
+            CarePackage carePackage;
+            
+            while(it.hasNext()){    //traverse the list of packages
+                carePackage = (CarePackage) it.next();
+                itemIt = (Iterator) carePackage.getItemList().iterator();
+                Item item;
+                
+                while(itemIt.hasNext()){    //traverse the list of items
+                    item = (Item) itemIt.next();
+                    updateItemQuantity(item.getItemName(), 
+                                       getQuantity(item.getItemName()) - 
+                                       item.getQuantity());
+                }
+            }
+        }
+        
+        //go through the individual items list
+        if(!cartToSub.getItems().isEmpty()){
+            Iterator itemIt = (Iterator) cartToSub.getItems().iterator();
+            Item item;
+            
+            while(itemIt.hasNext()){    //traverse the list of items
+                    item = (Item) itemIt.next();
+                    updateItemQuantity(item.getItemName(), 
+                                       getQuantity(item.getItemName()) - 
+                                       item.getQuantity());
             }
         }
     }
@@ -492,5 +586,43 @@ public class Inventory implements java.io.Serializable{
         catch (IOException e) {
            e.printStackTrace();
         }
+    }
+    
+    /**
+     * Returns a string representation of this Inventory object. The string 
+     * contains the packages, items in the packages, and individual items 
+     * in inventory.
+     * 
+     * @return string representation of Inventory
+     */
+    @Override
+    public String toString(){
+        String inventory = "Inventory:\n";
+        if(!this.packageList.isEmpty()){
+            inventory += "Package List:\n";
+            Iterator packageIt = (Iterator) this.packageList.iterator();
+            CarePackage carePackage;
+            int i = 1;
+            
+            while(packageIt.hasNext()){ //traverse through package list
+                carePackage = (CarePackage) packageIt.next();
+                inventory += "\tPackage " + i++ + ": " +  carePackage;
+          
+            }
+        }
+        if(!this.itemList.isEmpty()){
+            inventory += "Inventory Item List:\n";
+            Iterator it = (Iterator) this.itemList.iterator();
+            Item item;
+            int i = 1;
+            
+            while(it.hasNext()){    //traverse through inventory items
+                item = (Item) it.next();
+                inventory += "\tItem " + i++ + ": " + item;
+            }
+        }
+        inventory += "\n";
+        
+        return inventory;
     }
 }
