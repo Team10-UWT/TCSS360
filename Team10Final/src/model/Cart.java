@@ -32,13 +32,24 @@ public class Cart {
     
     public void addItem(Item theItem) {
         if (!itemExists(theItem.getItemName())){
-            itemList.add(theItem);
+            itemList.add(new Item(theItem.getItemName(), theItem.getItemType(), 
+                    1, theItem.getOptimalQuantity(), theItem.getValue()));
+        } else {
+            Iterator it = (Iterator) this.itemList.iterator();
+            Item item;
+            while(it.hasNext()){    //iterate through the list
+                item = (Item) it.next();
+                if(item.getItemName().equals(theItem.getItemName())){
+                    item.setQuantity(theItem.getQuantity()+1);
+                }
+            }
         }
     }
     
     public void addCarePackage(CarePackage thePackage){
         if (!carePackageExists(thePackage.getPackageName())) {
-            carePackageList.add(thePackage);
+            carePackageList.add(new CarePackage(thePackage.getPackageName(), 
+                    thePackage.getItemList()));
         }
     }
     
