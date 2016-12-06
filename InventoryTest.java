@@ -3,6 +3,10 @@
  * InventoryTest.java
  * J-Unit tests for the Inventory class.
  */
+import Model.Cart;
+import Model.CarePackage;
+import Model.Item;
+import Model.Inventory;
 import java.io.File;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -186,7 +190,10 @@ public class InventoryTest {
     }
 
     /**
-     * Test of getNeeded method, of class Inventory.
+     * Test of getNeeded method, of class Inventory. This test already
+     * determines beforehand which items should show up in the list. The items
+     * that should show up are Jacket, Jordans, and Orange Juice due to the
+     * ratio between their optimal and current quantities.
      */
     @Test
     public void testGetNeeded() {
@@ -218,7 +225,10 @@ public class InventoryTest {
     }
 
     /**
-     * Test of getItemsOfType method, of class Inventory.
+     * Test of getItemsOfType method, of class Inventory. This test 
+     * determines if the food items listed will show up. The items that should
+     * show up are Orange Juice and Canned Fruit due to their respective item
+     * types being set to Food.
      */
     @Test
     public void testGetItemsOfType() {
@@ -285,7 +295,10 @@ public class InventoryTest {
     }
 
     /**
-     * Test of updatePackages method, of class Inventory.
+     * Test of updatePackages method, of class Inventory. This test involves 
+     * multiple calls and the name of the item in the package should change
+     * if it is changed in inventory. Here, Canned Pineapple is changed to
+     * Gourmet Pineapple and the result is reflected in the package.
      */
     @Test
     public void testUpdatePackages() {
@@ -338,7 +351,10 @@ public class InventoryTest {
     }
 
     /**
-     * Test of serializeInventory method, of class Inventory.
+     * Test of serializeInventory method, of class Inventory. This tests to 
+     * see if the program will create a file called "items". The other 
+     * way to test this would be to deserialize inventory and that is done
+     * in the next method.
      */
     @Test
     public void testSerializeInventory() {
@@ -350,7 +366,9 @@ public class InventoryTest {
     }
 
     /**
-     * Test of deserializeInventory method, of class Inventory.
+     * Test of deserializeInventory method, of class Inventory. This test
+     * loads the inventory from the serialized files and determines if 
+     * the inventory is the same as that which was serialized.
      */
     @Test
     public void testDeserializeInventory() {
@@ -377,7 +395,10 @@ public class InventoryTest {
     }
 
     /**
-     * Test of addCart method, of class Inventory.
+     * Test of addCart method, of class Inventory. This test involves creating
+     * and adding a cart to inventory. The test determines if items from the
+     * package list and items list of the cart are being added to inventory 
+     * quantities.
      */
     @Test
     public void testAddCart() {
@@ -396,7 +417,9 @@ public class InventoryTest {
     }
 
     /**
-     * Test of subCart method, of class Inventory.
+     * Test of subCart method, of class Inventory. This test creates and 
+     * subtracts a cart from inventory. The test will check to see if the items
+     * in inventory have been properly updated.
      */
     @Test
     public void testSubCart() {
