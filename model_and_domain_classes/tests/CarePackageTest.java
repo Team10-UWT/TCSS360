@@ -3,6 +3,8 @@
  * CarePackageTest.java
  * J-Unit tests for the CarePackage class.
  */
+import Model.CarePackage;
+import Model.Item;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
