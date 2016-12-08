@@ -3,7 +3,8 @@
  * CarePackageTest.java
  * J-Unit tests for the CarePackage class.
  */
-import model.*;
+import model.CarePackage;
+import model.Item;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -44,7 +45,7 @@ public class CarePackageTest {
         
         assertEquals(false, instance == null);
     }
-    
+
     /**
      * Test of getPackageName method, of class CarePackage.
      */
@@ -249,5 +250,30 @@ public class CarePackageTest {
         int newValue = 35;
         instance.updateItemValue(itemName, newValue);
         assertEquals(newValue, instance.getItem(itemName).getValue());
+    }
+
+    /**
+     * Test of equals method, of class CarePackage.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        Object toCompare = new CarePackage("Test", itemList);
+        instance.setItemList(itemList);
+        instance.setPackageName("Test");
+        boolean expResult = true;
+        boolean result = instance.equals(toCompare);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of hashCode method, of class CarePackage.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        CarePackage test = new CarePackage(instance.getPackageName(),
+                                           instance.getItemList());
+        assertEquals(test.hashCode(), instance.hashCode());
     }
 }

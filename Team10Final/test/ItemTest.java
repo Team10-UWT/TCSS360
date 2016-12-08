@@ -3,7 +3,7 @@
  * ItemTest.java
  * J-Unit tests for the Item class.
  */
-import model.*;
+import model.Item;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

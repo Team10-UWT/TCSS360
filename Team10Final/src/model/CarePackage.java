@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Sandeep Heera
  * CarePackage.java
@@ -21,7 +23,17 @@ public class CarePackage implements java.io.Serializable{
     int packageValue;
     
     /**
-     * Default constructor. Must call setPackageValue() and 
+     * Default constructor.
+     */
+    public CarePackage(){
+        this.packageName = new String();
+        this.itemList = new ArrayList<>();
+        this.quantity = 0;
+        this.packageValue = 0;
+    }
+    
+    /**
+     * Parameterized constructor. Must call setPackageValue() and 
      * setPackageQuantity() after the CarePackage object has been 
      * initialized.
      * 
@@ -30,10 +42,18 @@ public class CarePackage implements java.io.Serializable{
      */
     public CarePackage(String packageName, ArrayList<Item> itemList){
         this.packageName = packageName;
-        this.itemList = new ArrayList<>();
-        this.itemList = itemList;
+        this.itemList = new ArrayList<>(itemList);
         this.quantity = 0;
         this.packageValue = 0;
+    }
+    
+    /**
+     * Copy constructor.
+     * 
+     * @param carePackage care package to be copied
+     */
+    public CarePackage(CarePackage carePackage){
+        this(carePackage.getPackageName(), carePackage.copyItemList());
     }
     
     /**
@@ -51,6 +71,21 @@ public class CarePackage implements java.io.Serializable{
      */
     public ArrayList<Item> getItemList(){
         return this.itemList;
+    }
+    
+    /**
+     * Returns a deep copy of the item list.
+     * 
+     * @return deep copy of itemList
+     */
+    public ArrayList<Item> copyItemList(){
+        ArrayList<Item> items = new ArrayList<>();
+        
+        for(int i = 0;i < this.itemList.size();i++){
+            Item itemCopy = new Item(this.itemList.get(i));
+            items.add(itemCopy);
+        }
+        return items;
     }
     
     /**
@@ -349,5 +384,32 @@ public class CarePackage implements java.io.Serializable{
     public int hashCode(){
         return Objects.hash(this.packageName, this.itemList, this.quantity,
                             this.packageValue);
+    }
+    
+    /**
+     * Returns a string representation of the CarePackage object. The string
+     * will store the fields of the CarePackage.
+     * 
+     * @return string representation of this care package
+     */
+    @Override
+    public String toString(){
+        String carePackage = "Package Name: " + this.getPackageName() + 
+                             ", Package Quantity: " + this.getQuantity() + 
+                             ", Package Value: " + this.getPackageValue();
+        if(!this.itemList.isEmpty()){
+            int i = 1;
+            Iterator it = (Iterator) this.itemList.iterator();
+            Item item;
+            carePackage += "\n\t\tItems in this package: \n";
+            
+            while(it.hasNext()){    //traverse through the item list
+                item = (Item) it.next();
+                carePackage += "\t\tItem " + i++ + ": " + item;
+            }
+        }
+        carePackage += "\n";
+        
+        return carePackage;
     }
 }

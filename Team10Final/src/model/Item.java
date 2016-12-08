@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Sandeep Heera
  * Item.java
@@ -22,6 +24,17 @@ public class Item implements java.io.Serializable{
     
     /**
      * Default constructor.
+     */
+    public Item(){
+        this.itemName = new String();
+        this.itemType = new String();
+        this.quantity = 0;
+        this.optimalQuantity = 0;
+        this.value = 0;
+    }
+    
+    /**
+     * Parameterized constructor.
      * 
      * @param itemName name of the item
      * @param itemType type of the item
@@ -36,6 +49,16 @@ public class Item implements java.io.Serializable{
         this.quantity = quantity;
         this.optimalQuantity = optimalQuantity;
         this.value = value;
+    }
+    
+    /**
+     * Copy constructor.
+     * 
+     * @param item item to be copied
+     */
+    public Item(Item item){
+        this(item.getItemName(), item.getItemType(), item.getQuantity(), 
+             item.getOptimalQuantity(), item.getValue());
     }
     
     /**
@@ -164,5 +187,21 @@ public class Item implements java.io.Serializable{
     public int hashCode(){
         return Objects.hash(this.itemName, this.itemType, this.quantity,
                             this.optimalQuantity, this.value);
+    }
+    
+    /**
+     * Returns a string representation of the Item object. The string will
+     * store the fields of the item.
+     * 
+     * @return string representation of this item
+     */
+    @Override
+    public String toString(){
+        String item = "Item Name: " + this.getItemName() + ", Item Type: " + 
+                      this.getItemType() + ", Item Quantity: " +
+                      this.getQuantity() + ", Optimal Quantity: " + 
+                      this.getOptimalQuantity() + ", Item Value: " + 
+                      this.getValue() + "\n";
+        return item;
     }
 }
