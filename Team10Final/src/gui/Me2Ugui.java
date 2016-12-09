@@ -15,7 +15,7 @@ public class Me2Ugui {
     
     private static JButton dButton = new JButton("Donations");
     
-    private static JButton rButton = new JButton("Recive Aids");
+    private static JButton rButton = new JButton("Receive Aid");
 
     
     public Me2Ugui() {
