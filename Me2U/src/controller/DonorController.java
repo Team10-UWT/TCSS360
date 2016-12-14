@@ -187,6 +187,7 @@ public class DonorController {
      */
     private void donateNowButtonMouseClicked() {                                             
         inventory.addCart(cart);
+	myUser.addPoints(cart.getCartValue());
         donorView.dispose();
         Me2UController controller = new Me2UController(inventory, myUserList, myUser);
     }                                            
