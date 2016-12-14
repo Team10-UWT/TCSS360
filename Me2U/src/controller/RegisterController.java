@@ -24,6 +24,16 @@ public class RegisterController {
     }
     
     private void addListeners() {
+        
+        registerView.getFrame().addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                myInventory.serializeInventory();
+                myUserList.serializeUserList();
+                System.exit(0);
+            }
+        });
+        
         registerView.getRegisterButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override

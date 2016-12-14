@@ -11,13 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
-import java.util.Arrays;
-import model.Me2Umodel;
-import model.User;
 
 public class UserLogin{
 
@@ -156,64 +151,7 @@ public class UserLogin{
 		registerButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		registerButton.setBackground(Color.WHITE);
 		registerButton.setBounds(30, 173, 117, 80);
-		//registerButton.addActionListener(new registerListener());
 		return registerButton;
 	}
-
-	
-//	 /**
-//	  * This action listener is search for input user id and password
-//	  * matches the user id and password in the Users list
-//	  * also initialize the Customer GUI
-//	  * @author Jayden Tan
-//	  *
-//	  */
-//	private class loginListener implements ActionListener {
-//
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//                    if(Me2Umodel.myUserList.userExists(Me2Umodel.myUserList.getUser(userNameText.getText()))){
-//                        User user = Me2Umodel.myUserList.getUser(userNameText.getText());
-//                        if (Arrays.equals(user.getPassword().toCharArray(), passwordField.getPassword())) {
-//                            System.out.println("User authenticated");
-//                            myFrame.dispose();
-//                            if (user.getType() == 0) {
-//                                AdminHomePage adminpage = new AdminHomePage();
-//                            } else {
-//                                Me2Ugui m2ugui = new Me2Ugui();
-//                            }
-//                            
-//                        } else {
-//                            incorrectLogin.setVisible(true);
-//                        }
-//                    
-//			//if the user name and password correct
-//			//initialize AdminHomePage view
-//			//hide the GUI
-//			//myFrame.dispose();
-//			//AdminHomePage admin = new AdminHomePage();
-//                    } else {
-//                        incorrectLogin.setVisible(true);
-//                    }
-//		}
-//		
-//	}
-	
-//	/**
-//	 * This action listener is initialize the register GUI
-//	 * @author Jayden Tan
-//	 *
-//	 */
-//	private class registerListener implements ActionListener {
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//			//hide the login GUI
-//			myFrame.dispose();
-//			//initialize the register GUI
-//			Register register = new Register();
-//			
-//		}
-//		
-//	}
 
 }

@@ -35,23 +35,16 @@ public class AdminHomePage extends JFrame {
 
 	public AdminHomePage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		setBounds(100, 100, 600, 553);
 		setVisible(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		 
-		
 		createFunctionalityButtons(contentPane);
 		createSubFunctionalityButtons(contentPane);
 		setUpTable(contentPane);
 		setUpItemLabelField(contentPane);
-		
-
-		
 		valueTextField = new JTextField();
 		valueTextField.setBounds(101, 444, 130, 26);
 		contentPane.add(valueTextField);

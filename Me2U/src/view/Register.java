@@ -4,8 +4,6 @@ package view;
  * Jayden Tan
  * TCSS360
  */
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,10 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Color;
-import java.awt.Font;
 import javafx.scene.control.RadioButton;
-import model.Me2Umodel;
-import model.User;
 
 
 /**
@@ -59,7 +54,9 @@ public class Register {
 		myFrame.setVisible(true);
 		
 	}
-	
+	public JFrame getFrame() {
+            return myFrame;
+        }
 	/**
 	 * set up user id label
 	 * @return user id label

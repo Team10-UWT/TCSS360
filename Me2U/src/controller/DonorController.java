@@ -32,13 +32,12 @@ public class DonorController {
      * inventory, and prepares the event handlers.
      */
     public DonorController(Inventory theInventory, UserList theUserList, User theUser){
-        this.inventory = new Inventory();
+        inventory = theInventory;
         myUserList = theUserList;
         myUser = theUser;
-        this.cart = new Cart();
-        this.donorView = new DonorView();
-        this.inventory.deserializeInventory();
-        this.addListeners();
+        cart = new Cart();
+        donorView = new DonorView();
+        addListeners();
     }
     
     /**
@@ -73,15 +72,6 @@ public class DonorController {
             }
         );
 		
-        this.donorView.getLogoutButton().addMouseListener(
-            new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    logoutButtonActionPerformed();
-                }
-            }
-        );
-        
         this.donorView.getAddItemButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override
@@ -117,6 +107,15 @@ public class DonorController {
                 }
             }
         );
+        
+        this.donorView.getBackButton().addMouseListener(
+            new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    backButtonMouseClicked();
+                }
+            }
+        );
     }        
     
     /**
@@ -127,13 +126,11 @@ public class DonorController {
     public DonorView getDonorView(){
         return this.donorView;
     }
-    /**
-     * The application when the donor clicks logout.
-     */
-    private void logoutButtonActionPerformed() {                                             
-        System.exit(0);
-    }         
-    
+      
+    private void backButtonMouseClicked() {
+        donorView.dispose();
+        Me2UController controller = new Me2UController(inventory, myUserList, myUser);
+    }
     /**
      * Determines which category the donor has selected and populates the 
      * category items JList depending on that selection.
@@ -190,9 +187,8 @@ public class DonorController {
      */
     private void donateNowButtonMouseClicked() {                                             
         inventory.addCart(cart);
-        inventory.serializeInventory();
         donorView.dispose();
-        
+        Me2UController controller = new Me2UController(inventory, myUserList, myUser);
     }                                            
     
     /**
@@ -268,12 +264,4 @@ public class DonorController {
         this.donorView.getCartPointsTextField().setText(Integer.toString(cart.getCartValue()));
     }
     
-    /**
-     * Returns the back button from the DonorView member.
-     * 
-     * @return back button from DonorView member
-     */
-    public JButton getBackButton(){
-        return this.donorView.getBackButton();
-    }
 }

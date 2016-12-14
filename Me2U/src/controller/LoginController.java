@@ -61,7 +61,7 @@ public class LoginController {
                     if (user.getType() == 0) {
                         AdminController admincontroller = new AdminController(myInventory, myUserList, user);
                     } else {
-                        //Me2UController homecontroller = new Me2UController(myInventory, myUserList);
+                        Me2UController homecontroller = new Me2UController(myInventory, myUserList, user);
                     }                    
                 } else {
                     loginView.getIncorrectLoginLabel().setVisible(true);

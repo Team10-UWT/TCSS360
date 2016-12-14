@@ -67,20 +67,20 @@ public class RecipientController {
             }
         );
 	
-        this.recipView.getDonateNowButton().addMouseListener(
+        this.recipView.getRequestAidButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    donateNowButtonMouseClicked();
+                    requestAidButtonMouseClicked();
                 }
             }
         );
 		
-        this.recipView.getLogoutButton().addMouseListener(
+        this.recipView.getBackButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    logoutButtonActionPerformed();
+                    backButtonActionPerformed();
                 }
             }
         );
@@ -131,10 +131,11 @@ public class RecipientController {
         return this.recipView;
     }
     /**
-     * The application when the donor clicks logout.
+     * The application when the donor clicks back.
      */
-    private void logoutButtonActionPerformed() {                                             
-        System.exit(0);
+    private void backButtonActionPerformed() {                                             
+        recipView.dispose();
+        Me2UController controller = new Me2UController(inventory, myUserList, myUser);
     }         
     
     /**
@@ -183,11 +184,11 @@ public class RecipientController {
      * The items in the cart will be added to inventory (model) and the updated
      * inventory will be serialized.
      */
-    private void donateNowButtonMouseClicked() {                                             
+    private void requestAidButtonMouseClicked() {                                             
         if(checkAvalibility(cart)) {
             inventory.subCart(cart);
-            inventory.serializeInventory();
-            System.exit(0);
+            recipView.dispose();
+            Me2UController controller = new Me2UController(inventory, myUserList, myUser);
         }
     }
     
@@ -275,14 +276,5 @@ public class RecipientController {
             ((DefaultListModel)this.recipView.getQuantityList().getModel()).addElement(items.get(i).getQuantity());
         }
         this.recipView.getCartPointsTextField().setText(Integer.toString(cart.getCartValue()));
-    }
-    
-    /**
-     * Returns the back button from the DonorView member.
-     * 
-     * @return back button from DonorView member
-     */
-    public JButton getBackButton(){
-        return this.recipView.getBackButton();
     }
 }

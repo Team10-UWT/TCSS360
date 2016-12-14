@@ -31,12 +31,11 @@ public class RecipientView extends javax.swing.JFrame {
     private javax.swing.JLabel categoryLabel;
     private javax.swing.JList<String> categoryList;
     private javax.swing.JScrollPane categoryScrollPane;
-    private javax.swing.JButton donateNowButton;
+    private javax.swing.JButton requestAidButton;
     private javax.swing.JPanel donationPagePanel;
     private javax.swing.JList<String> itemList;
     private javax.swing.JLabel itemsLabel;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JButton logoutButton;
     private javax.swing.JDialog packagesPopUp;
     private javax.swing.JScrollPane packagesScrollPane;
     private javax.swing.JTextArea packagesTextArea;
@@ -72,7 +71,7 @@ public class RecipientView extends javax.swing.JFrame {
         cartQuantityScrollPane = new javax.swing.JScrollPane();
         quantityList = new javax.swing.JList<String>((new DefaultListModel<String>()));
         removeItemFromCartButton = new javax.swing.JButton();
-        donateNowButton = new javax.swing.JButton();
+        requestAidButton = new javax.swing.JButton();
         quantityTextArea = new javax.swing.JTextField();
         addItemButton = new javax.swing.JButton();
         categoryLabel = new javax.swing.JLabel();
@@ -80,7 +79,6 @@ public class RecipientView extends javax.swing.JFrame {
         cartLabel = new javax.swing.JLabel();
         quantityLabel = new javax.swing.JLabel();
         pageNameLabel = new javax.swing.JLabel();
-        logoutButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         cartPointsTextField = new javax.swing.JTextField();
         cartPointsLabel = new javax.swing.JLabel();
@@ -120,7 +118,7 @@ public class RecipientView extends javax.swing.JFrame {
 
         removeItemFromCartButton.setText("Remove Item");
 
-        donateNowButton.setText("Request Now");
+        requestAidButton.setText("Request Now");
 
         quantityTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -136,8 +134,6 @@ public class RecipientView extends javax.swing.JFrame {
 
         pageNameLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         pageNameLabel.setText("Me2U Recipient Page");
-
-        logoutButton.setText("Logout");
 
         backButton.setText("Back");
 
@@ -159,12 +155,11 @@ public class RecipientView extends javax.swing.JFrame {
                         .addComponent(pageNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(removeItemFromCartButton))
                         .addGap(112, 112, 112))
                     .addGroup(donationPagePanelLayout.createSequentialGroup()
                         .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(donateNowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(requestAidButton, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(donationPagePanelLayout.createSequentialGroup()
                                 .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, donationPagePanelLayout.createSequentialGroup()
@@ -207,8 +202,7 @@ public class RecipientView extends javax.swing.JFrame {
                 .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(pageNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pageNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(47, 47, 47)
                 .addGroup(donationPagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(donationPagePanelLayout.createSequentialGroup()
@@ -239,7 +233,7 @@ public class RecipientView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(categoryScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(donateNowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(requestAidButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
 
@@ -253,8 +247,8 @@ public class RecipientView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(donationPagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
         pack();
+        setVisible(true);
     }                  
 
     /**
@@ -320,18 +314,10 @@ public class RecipientView extends javax.swing.JFrame {
      * 
      * @return donate now JButton
      */
-    public JButton getDonateNowButton(){
-        return this.donateNowButton;
+    public JButton getRequestAidButton(){
+        return this.requestAidButton;
     }
     
-    /**
-     * Returns the logout JButton.
-     * 
-     * @return logout JButton
-     */
-    public JButton getLogoutButton(){
-        return this.logoutButton;
-    }
     
     /**
      * Returns the remove item JButton.

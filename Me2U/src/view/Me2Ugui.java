@@ -11,46 +11,45 @@ public class Me2Ugui {
     /**Set north panel. */
     private final JPanel myNorthPanel = new JPanel();
     private int PADDING = 30;  
-    private static JButton dButton = new JButton("Donations"); 
-    private static JButton rButton = new JButton("Receive Aid");
+    private JButton dButton = new JButton("Donations"); 
+    private JButton rButton = new JButton("Receive Aid");
     private JFrame frame;
     private JComponent southPanel;
     private NewsPanel news;
-
+    private JPopupMenu popupD;
+    private JPopupMenu popupR;
+    private JMenuItem reqAidItem;
+    private JMenuItem donateItem;
+    private JButton logoutButton;
+    private JButton adminButton;
+    private JLabel nameLabel;
     
     public Me2Ugui() {
     	initialize();  	
     }
     
-    public void initialize() {
+    private void initialize() {
         frame = new JFrame("Me 2 U");
         frame.setPreferredSize(new Dimension(720, 480));
-        frame.setBackground(Color.WHITE);
-        
+        frame.setBackground(Color.WHITE);        
         southPanel = new JPanel();
         southPanel.setBackground(Color.WHITE);
-
         news = new NewsPanel();
         news.setBackground(Color.LIGHT_GRAY);
         news.setPreferredSize(new Dimension(200, 400));
-
         final MostNeededItemPanel moi = new MostNeededItemPanel();
         moi.setBackground(Color.RED);
         moi.setPreferredSize(new Dimension(200, 400));
-        
-
         final LeaderBoardPanel lbp = new LeaderBoardPanel();
         lbp.setBackground(Color.CYAN);
-        lbp.setPreferredSize(new Dimension(200, 400));
-        
+        lbp.setPreferredSize(new Dimension(200, 400));     
         final Box centerBox = new Box(BoxLayout.LINE_AXIS);
         centerBox.add(news);
         centerBox.add(Box.createHorizontalStrut(PADDING));
         centerBox.add(moi);
         centerBox.add(Box.createHorizontalStrut(PADDING));
         centerBox.add(lbp);
-        southPanel.add(centerBox);
-        
+        southPanel.add(centerBox);   
         frame.getContentPane().add(getNorthPanel(), BorderLayout.NORTH);
         frame.add(southPanel, BorderLayout.CENTER);
         frame.pack();
@@ -63,103 +62,70 @@ public class Me2Ugui {
     private JPanel getNorthPanel() {
         myNorthPanel.add(createDonationButton());
         myNorthPanel.add(createRecipientButton());
+        nameLabel = new JLabel("User");
+        myNorthPanel.add(nameLabel);
+        logoutButton = new JButton("Logout");
+        myNorthPanel.add(logoutButton);
+        adminButton = new JButton("Admin Page");
+        adminButton.setVisible(false);
+        myNorthPanel.add(adminButton);
         myNorthPanel.setLayout(new FlowLayout(FlowLayout.LEFT));  
 		return myNorthPanel;
     }
     
-    public JButton createDonationButton() {
-    	final JPopupMenu popup = new JPopupMenu();
-    	
-        popup.add(new JMenuItem("How To Donate")); /*{
-			private static final long serialVersionUID = 3743894585986691777L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 1 selected");
-            }
-        }));*/
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem("Volunteering")); /*{
-			private static final long serialVersionUID = -291201761480013467L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 2 selected");
-            }
-        }));*/
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem("Pick Up Eligibility")); /*{
-			private static final long serialVersionUID = 3743894585986691777L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 1 selected");
-            }
-        }));*/
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem(new AbstractAction("Items We Take"){
-			private static final long serialVersionUID = -291201761480013467L;
-			public void actionPerformed(ActionEvent e) {
-                new ItemList();
-            }
-        }));
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem("Donate Now!")); /*{
-			private static final long serialVersionUID = -291201761480013467L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 2 selected");
-            }
-        }));*/
-        
-        dButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                popup.show(dButton, dButton.getX(), dButton.getY() + 30);
-            }
-        });
-		return dButton;
+    private JButton createDonationButton() {
+    	popupD = new JPopupMenu();  	
+        popupD.add(new JMenuItem("How To Donate")); 
+        popupD.addSeparator();       
+        popupD.add(new JMenuItem("Volunteering")); 
+        popupD.addSeparator();       
+        popupD.add(new JMenuItem("Pick Up Eligibility")); 
+        popupD.addSeparator();
+        popupD.add(new JMenuItem("Items We Take"));
+        popupD.addSeparator();
+        donateItem = new JMenuItem("Donate Now!");
+        popupD.add(donateItem);
+	return dButton;
+    } 
+    
+    private JButton createRecipientButton() {   
+        popupR = new JPopupMenu();      
+        popupR.add(new JMenuItem("Eligibility")); 
+        popupR.addSeparator();    
+        popupR.add(new JMenuItem("Package Options")); 
+        popupR.addSeparator();
+        reqAidItem = new JMenuItem("Request Aid!");
+        popupR.add(reqAidItem);
+        return rButton;
     }
-    
-    public JButton createRecipientButton() {
-
-        
-        final JPopupMenu popup = new JPopupMenu();
-        
-        popup.add(new JMenuItem("Eligibility")); /*{
-			private static final long serialVersionUID = 3743894585986691777L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 1 selected");
-            }
-        }));*/
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem("Package Options")); /*{
-			private static final long serialVersionUID = -291201761480013467L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 2 selected");
-            }
-        }));*/
-        popup.addSeparator();
-        
-        popup.add(new JMenuItem("Request Aid!")); /*{
-			private static final long serialVersionUID = -291201761480013467L;
-
-			public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Option 2 selected");
-            }
-        }));*/
-        
-        rButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                popup.show(dButton, rButton.getX(), rButton.getY() + 30);
-            }
-        });
-		return rButton;
+    public JMenuItem getReqAidItem() {
+        return reqAidItem;
     }
-    
-    
-
+    public JMenuItem getDonateItem() {
+        return donateItem;
+    }
+    public JPopupMenu getPopupR() {
+        return popupR;
+    }
+    public JPopupMenu getPopupD() {
+        return popupD;
+    }
+    public JFrame getFrame() {
+        return frame;
+    }
+    public JButton getdButton() {
+        return dButton;
+    }
+    public JButton getrButton() {
+        return rButton;
+    }
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
+    public JButton getLogoutButton() {
+        return logoutButton;
+    }
+    public JButton getAdminButton() {
+        return adminButton;
+    }
 }
