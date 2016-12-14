@@ -4,19 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import model.*;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import model.Me2Umodel;
 
 public class AdminHomePage extends JFrame {
 
@@ -27,17 +20,22 @@ public class AdminHomePage extends JFrame {
 	private JTextField qtyTextField;
 	private JTextField optimalTextField;
 	private DefaultTableModel model;
-	private Inventory inventory;
 	private JTextField valueTextField;
 	private JLabel valueLabel;
+	private JButton backButton;
+	private JButton logOutButton;
+	private JButton clearButton;
+	private JButton addButton;
+	private JButton updateButton;
+	private JButton deleteButton;
 
 	/**
 	 * Create the frame.
 	 */
 
 	public AdminHomePage() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);               
-		this.inventory = Me2Umodel.myInventory;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		setBounds(100, 100, 600, 553);
 		setVisible(true);
 		contentPane = new JPanel();
@@ -60,6 +58,7 @@ public class AdminHomePage extends JFrame {
 		valueTextField.setColumns(10);
 	}
 
+      
 	/**
 	 * this method set up the labels and text fields
 	 *  for category, item name, quantity, optimal quantity
@@ -126,9 +125,8 @@ public class AdminHomePage extends JFrame {
  * @param contentPane - a JPanel for the view
  */
 	private void setUpTable(JPanel contentPane){
-		String[] columns = {"Category", "Item Name", "Quantity", "Optimal Quantity", "Value"};
-
 		
+
 		//create a scroll pane surround the JTable
 		//the table is inside the scroll pane
 		JScrollPane scrollPane = new JScrollPane();
@@ -136,11 +134,9 @@ public class AdminHomePage extends JFrame {
 		contentPane.add(scrollPane);
 		
 		//create the JTable with given data and column information
-		
-
-		
-		model = new DefaultTableModel(getItemListArray(), columns);
+		model = new DefaultTableModel();
 		table = new JTable(model);
+		table.setDefaultEditor(Object.class, null);
 		
 		scrollPane.setViewportView(table);
 	}
@@ -151,24 +147,17 @@ public class AdminHomePage extends JFrame {
  * @param contentPane - a JPanel of the view
  */
 	private void createSubFunctionalityButtons(JPanel contentPane) {
-		//refresh button
-		JButton refreshButton = new JButton("Refresh");
-		refreshButton.addActionListener(new loadItems());
-		refreshButton.setBounds(491, 6, 94, 35);
-		contentPane.add(refreshButton);
-		refreshButton.addActionListener(new loadItems());
+		
 		
 		//back button
-		JButton backButton = new JButton("<Back");
+		backButton = new JButton("Home");
 		backButton.setBounds(0, 0, 75, 29);
 		contentPane.add(backButton);
-		backButton.addActionListener(new backward());
 		
 		//log out button
-		JButton logOutButton = new JButton("Log Out");
+		logOutButton = new JButton("Log Out");
 		logOutButton.setBounds(491, 479, 94, 46);
 		contentPane.add(logOutButton);
-		logOutButton.addActionListener(new logOutAccount());
 	}
 	
 /**
@@ -179,31 +168,29 @@ public class AdminHomePage extends JFrame {
 	private void createFunctionalityButtons(JPanel contentPane) {
 		
 		//clear button
-		JButton clearButton = new JButton("Clear");
+		clearButton = new JButton("Clear");
 		clearButton.setBounds(244, 317, 117, 29);
 		contentPane.add(clearButton);
-		clearButton.addActionListener(new clearItemTextField());
 		
 		//add button
-		JButton addButton = new JButton("Add");
+		addButton = new JButton("Add");
 		addButton.setBounds(244, 350, 117, 29);
 		contentPane.add(addButton);
-		addButton.addActionListener(new addItem());
 		
 		//update button
-		JButton updateButton = new JButton("Update");
+		updateButton = new JButton("Update");
 		updateButton.setBounds(244, 383, 117, 29);
 		contentPane.add(updateButton);
-		updateButton.addActionListener(new updateItem());
 		
 		//delete button
-		JButton deleteButton = new JButton("Delete");
+		deleteButton = new JButton("Delete");
 		deleteButton.setBounds(243, 416, 117, 29);
 		contentPane.add(deleteButton);
-		deleteButton.addActionListener(new deleteItem());
 	}
 	
-	private void emptyTextField() {
+        
+	
+	public void emptyTextField() {
 		categoryTextField.setText("");
 		itemNameTextField.setText("");
 		qtyTextField.setText("");
@@ -211,173 +198,62 @@ public class AdminHomePage extends JFrame {
 		valueTextField.setText("");
 	}
 	
-	
-	private Object[][] getItemListArray(){
-		Object[][] datas = new Object[inventory.getItemList().size()][5];
-		for(int i = 0; i< inventory.getItemList().size(); i++) {
-			datas[i][0] = inventory.getItemList().get(i).getItemType();
-			datas[i][1] = inventory.getItemList().get(i).getItemName();
-			datas[i][2] = inventory.getItemList().get(i).getQuantity();
-			datas[i][3] = inventory.getItemList().get(i).getOptimalQuantity();
-			datas[i][4] = inventory.getItemList().get(i).getValue();
-		}
-		return datas;
-	}
-	
-	
-	/**
-	 * This is the action listener to clear the all the text field to empty string
-	 */
-	private class clearItemTextField implements ActionListener{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			emptyTextField();
-		}
-		
+	
+	public JButton getBackButton() {
+		return backButton;
 	}
 	
-	/**
-	 * This is the action listener for add an item in the inventory
-	 * @author Jayden Tan
-	 *
-	 */
-	private class addItem implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			String category = categoryTextField.getText();
-			String itemName = itemNameTextField.getText();
-			String quantity = qtyTextField.getText();
-			String optimalQty = optimalTextField.getText();
-			String value = valueTextField.getText();
-			
-			if(category.isEmpty() || itemName.isEmpty() || quantity.isEmpty() || optimalQty.isEmpty() || value.isEmpty()){	
-				JOptionPane.showMessageDialog(contentPane, "Please fill in all blank text fields!", "Inane error", JOptionPane.ERROR_MESSAGE);
-			} else {
-				//The tableModel is behind the JTable handles all of the data behind the table
-				//In order to add and remove row from a table, you need to use a DefaulTableModel
-				
-				inventory.addItem(category, itemName, Integer.parseInt(quantity), Integer.parseInt(optimalQty), Integer.parseInt(value));
-				
-				String[] row = {category, itemName, quantity, optimalQty, value};
-				model.addRow(row);
-				JOptionPane.showMessageDialog(contentPane, "Add Item Successfully!");
-				inventory.serializeInventory();
-				emptyTextField();
-			}
-		}
-		
+	public JButton getLogOutButton(){
+		return logOutButton;
 	}
 	
-	/**
-	 * This is the action listener for update an item's information in the inventory
-	 * @author Jayden Tan
-	 *
-	 */
-	private class updateItem implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			String category = categoryTextField.getText();
-			String itemName = itemNameTextField.getText();
-			String quantity = qtyTextField.getText();
-			String optimalQty = optimalTextField.getText();
-			String value = valueTextField.getText();
-			
-			if(table.getSelectedRow() == -1) {
-				JOptionPane.showMessageDialog(contentPane, "Please select an item to update", "Inane error", JOptionPane.ERROR_MESSAGE);
-			}else if(category.isEmpty() || itemName.isEmpty() || quantity.isEmpty() || optimalQty.isEmpty()){
-				JOptionPane.showMessageDialog(contentPane, "Please fill all blank text fields", "Inane error", JOptionPane.ERROR_MESSAGE);
-			}else {
-				model.setValueAt(category, table.getSelectedRow(), 0);
-				model.setValueAt(itemName, table.getSelectedRow(), 1);
-				model.setValueAt(quantity, table.getSelectedRow(), 2);
-				model.setValueAt(optimalQty, table.getSelectedRow(), 3);
-				int i = table.getSelectedRow();
-				inventory.getItemList().get(i).setItemType(category);
-				inventory.getItemList().get(i).setItemName(itemName);
-				inventory.getItemList().get(i).setQuantity(Integer.parseInt(quantity));
-				inventory.getItemList().get(i).setOptimalQuantity(Integer.parseInt(optimalQty));
-				inventory.getItemList().get(i).setValue(Integer.parseInt(value));
-				inventory.serializeInventory();
-				JOptionPane.showMessageDialog(contentPane, "Update item Successfully!");
-			}		
-		}
-		
+	public JButton getClearButton(){
+		return clearButton;
 	}
 	
-	/**
-	 * This is the action listener for delete an item in the inventory
-	 * @author Jayden Tan
-	 *
-	 */
-	private class deleteItem implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			int i = table.getSelectedRow();
-			System.out.println("Table row = " + i);
-			
-			if(i == -1) {
-				JOptionPane.showMessageDialog(contentPane, "Please select an item to delete", "Inane error", JOptionPane.ERROR_MESSAGE);
-			}else {
-				model.removeRow(i);
-				inventory.deleteItem(inventory.getItemList().get(i).getItemName());
-				inventory.serializeInventory();
-				JOptionPane.showMessageDialog(contentPane, "Delete item Successfully!");
-			}
-		}
-		
+	public JButton getAddButton(){
+		return addButton;
 	}
 	
-	/**
-	 * This is the action listener when admin wants to refresh to the latest item data
-	 * @author Jayden Tan
-	 *
-	 */
-	private class loadItems implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			table.setModel(model);
-			repaint();
-		}
-		
+	public JButton getUpdateButton(){
+		return updateButton;
 	}
 	
-	/**
-	 * This is the action listener for go back to the main page view
-	 * @author Jayden Tan
-	 *
-	 */
-	private class backward implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+	public JButton getDeleteButton(){
+		return deleteButton;
 	}
 	
-	/**
-	 * This is the action listener for log out as the admin
-	 * It will return back to the log in page view
-	 * @author Jayden Tan
-	 *
-	 */
-	private class logOutAccount implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+	public JTable getTable(){
+		return table;
 	}
+	
+	public JTextField getCategoryTextField(){
+		return categoryTextField;
+	}
+	
+	public JTextField getItemNameTextField(){
+		return itemNameTextField;
+	}
+	
+	public JTextField getQtyTextField(){
+		return qtyTextField;
+	}
+	
+	public JTextField getOptimalTextField(){
+		return optimalTextField;
+	}
+	
+	public JTextField getValueTextField(){
+		return valueTextField;
+	}
+	
+	public JPanel getContentPane(){
+		return contentPane;
+	}
+	
+	public DefaultTableModel getModel(){
+		return model;
+	}
+	
 }

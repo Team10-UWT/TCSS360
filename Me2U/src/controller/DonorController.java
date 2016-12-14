@@ -20,6 +20,8 @@ import view.*;
  */
 public class DonorController {
     private Inventory inventory;
+    private UserList myUserList;
+    private User myUser;
     private Cart cart;
     private DonorView donorView;
     private String itemToCheck = new String();
@@ -29,8 +31,10 @@ public class DonorController {
      * Default constructor. Initializes the model members, deserializes
      * inventory, and prepares the event handlers.
      */
-    public DonorController(Inventory theInventory){
+    public DonorController(Inventory theInventory, UserList theUserList, User theUser){
         this.inventory = new Inventory();
+        myUserList = theUserList;
+        myUser = theUser;
         this.cart = new Cart();
         this.donorView = new DonorView();
         this.inventory.deserializeInventory();
@@ -41,6 +45,16 @@ public class DonorController {
      * Add event handlers to the swing elements in the view.
      */
     private void addListeners(){
+        
+        donorView.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                inventory.serializeInventory();
+                myUserList.serializeUserList();
+                System.exit(0);
+            }
+        });
+        
         this.donorView.getRemoveItemButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override
@@ -177,7 +191,8 @@ public class DonorController {
     private void donateNowButtonMouseClicked() {                                             
         inventory.addCart(cart);
         inventory.serializeInventory();
-        System.exit(0);
+        donorView.dispose();
+        
     }                                            
     
     /**

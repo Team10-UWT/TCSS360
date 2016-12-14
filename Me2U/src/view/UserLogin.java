@@ -40,7 +40,9 @@ public class UserLogin{
 		myFrame.setVisible(true);		
 		
 	}
-        
+        public JFrame getFrame() {
+            return myFrame;
+        }
         public JButton getRegisterButton(){
             return registerButton;
         }

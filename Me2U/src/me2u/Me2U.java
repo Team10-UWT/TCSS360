@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package me2u;
-import view.*;
 import model.*;
 import controller.*;
 /**

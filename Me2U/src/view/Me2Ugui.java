@@ -10,29 +10,27 @@ import java.awt.event.MouseEvent;
 public class Me2Ugui {
     /**Set north panel. */
     private final JPanel myNorthPanel = new JPanel();
-
-    private int PADDING = 30;
-    
-    private static JButton dButton = new JButton("Donations");
-    
+    private int PADDING = 30;  
+    private static JButton dButton = new JButton("Donations"); 
     private static JButton rButton = new JButton("Receive Aid");
+    private JFrame frame;
+    private JComponent southPanel;
+    private NewsPanel news;
 
     
     public Me2Ugui() {
-    	//inventory.deserializeInventory();
-    	start();
-    	
+    	initialize();  	
     }
     
-    public void start() {
-        final JFrame frame = new JFrame("Me 2 U");
+    public void initialize() {
+        frame = new JFrame("Me 2 U");
         frame.setPreferredSize(new Dimension(720, 480));
         frame.setBackground(Color.WHITE);
         
-        final JComponent southPanel = new JPanel();
+        southPanel = new JPanel();
         southPanel.setBackground(Color.WHITE);
 
-        final NewsPanel news = new NewsPanel();
+        news = new NewsPanel();
         news.setBackground(Color.LIGHT_GRAY);
         news.setPreferredSize(new Dimension(200, 400));
 

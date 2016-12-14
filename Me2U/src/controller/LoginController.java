@@ -12,9 +12,11 @@ import view.*;
  * @author David
  */
 public class LoginController {
+    
     Inventory myInventory;
     UserList myUserList;
     UserLogin loginView;
+    
     public LoginController(Inventory theInventory, UserList theUserList) {
         myInventory = theInventory;
         myUserList = theUserList;
@@ -23,6 +25,15 @@ public class LoginController {
     }
     
     private void addListeners() {
+        
+        loginView.getFrame().addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                myInventory.serializeInventory();
+                myUserList.serializeUserList();
+                System.exit(0);
+            }
+        });
         
         loginView.getLoginButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
@@ -47,11 +58,11 @@ public class LoginController {
                 if (Arrays.equals(user.getPassword().toCharArray(), loginView.getPasswordField().getPassword())) {
                     System.out.println("User authenticated");
                     loginView.close();
-                        if (user.getType() == 0) {
-                            //AdminController admincontroller = new AdminController(myInventory, myUserList);
-                        } else {
-                          //Me2UController homecontroller = new Me2UController(myInventory, myUserList);
-                        }                    
+                    if (user.getType() == 0) {
+                        AdminController admincontroller = new AdminController(myInventory, myUserList, user);
+                    } else {
+                        //Me2UController homecontroller = new Me2UController(myInventory, myUserList);
+                    }                    
                 } else {
                     loginView.getIncorrectLoginLabel().setVisible(true);
                 }
@@ -62,6 +73,6 @@ public class LoginController {
     
     private void registerButtonMouseClicked() {
         loginView.close();
-        //RegisterController controller = new RegisterController(myInventory, myUserList);
+        RegisterController controller = new RegisterController(myInventory, myUserList);
     }
 }

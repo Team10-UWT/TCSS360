@@ -30,13 +30,11 @@ public class Register {
 	private JTextField idText;
 	private JTextField nameText;
 	private JTextField passwordText;
-	private JTextField addressText;
-	private JTextField phoneNumberText;
-	private JTextField emailText;
 	private JFrame myFrame;
         private JLabel nameTakenLabel;
         private RadioButton dradio;
         private RadioButton rradio;
+        private JButton registerButton;
 
 	/**
 	 * Create the frame.
@@ -50,21 +48,13 @@ public class Register {
 		myFrame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		myFrame.setLocationRelativeTo(null);
-		
-		
 		contentPane.add(customerIDLabel());
 		contentPane.add(nameLabel());
-		//contentPane.add(addressLabel());
-		//contentPane.add(phoneNumberLabel());
 		contentPane.add(passwordLabel());
-                contentPane.add(nameTakenLabel());
-		//contentPane.add(emailLabel());	
+                contentPane.add(nameTakenLabel());	
 		contentPane.add(idText());
 		contentPane.add(nameText());
 		contentPane.add(passwordText());
-		//contentPane.add(addressText());
-		//contentPane.add(phoneNumberText());
-		//contentPane.add(emailText());
 		contentPane.add(registerButton());
 		myFrame.setVisible(true);
 		
@@ -87,7 +77,9 @@ public class Register {
             nameTakenLabel.setVisible(false);
             return nameTakenLabel;
         }
-        
+        public JLabel getNameTakenLabel() {
+            return nameTakenLabel;
+        }
 	
 	/**
 	 * set up user name label
@@ -98,47 +90,12 @@ public class Register {
 		nameLabel.setBounds(25, 56, 61, 16);
 		return nameLabel;
 	}
-	
-//	/**
-//	 * set up user address label
-//	 * @return user address label
-//	 */
-//	private JLabel addressLabel() {
-//		JLabel addressLabel = new JLabel("Address");
-//		addressLabel.setBounds(25, 112, 61, 16);
-//		return addressLabel;
-//	}
-	
-//	/**
-//	 * set up user phone number label
-//	 * @return user phone number label
-//	 */
-//	private JLabel phoneNumberLabel() {
-//		JLabel phoneNumberLabel = new JLabel("Phone #");
-//		phoneNumberLabel.setBounds(25, 140, 61, 16);
-//		return phoneNumberLabel;
-//	}
-	
-	/**
-	 * set up user password label
-	 * @return password label
-	 */
+
 	private JLabel passwordLabel() {
 		JLabel passwordLabel = new JLabel("Password");
 		passwordLabel.setBounds(25, 84, 61, 16);
 		return passwordLabel;
-	}
-	
-//	/**
-//	 * set up email label
-//	 * @return email Label
-//	 */
-//	private JLabel emailLabel() {
-//		JLabel emailLabel = new JLabel("Email");
-//		emailLabel.setBounds(25, 168, 61, 16);
-//		return emailLabel;
-//	}
-	
+        }
 	
 	/**
 	 * set up user id text field
@@ -150,6 +107,10 @@ public class Register {
 		idText.setColumns(10);
 		return idText;
 	}
+        
+        public JTextField getIDText() {
+            return idText;
+        }
 	/**
 	 * set up user name text field
 	 * @return user name text field
@@ -160,6 +121,10 @@ public class Register {
 		nameText.setColumns(10);
 		return nameText;
 	}
+        
+        public JTextField getNameText() {
+            return nameText;
+        }
 	/**
 	 * set up user password text field
 	 * @return user password text field
@@ -170,87 +135,27 @@ public class Register {
 		passwordText.setColumns(10);
 		return passwordText;
 	}
-//	/**
-//	 * set up user address text field
-//	 * @return user address text field
-//	 */
-//	private JTextField addressText() {
-//		addressText = new JTextField();
-//		addressText.setBounds(122, 107, 228, 26);
-//		addressText.setColumns(10);
-//		return addressText;
-//	}
-//	/**
-//	 * set up phone number text field
-//	 * @return phone number text field
-//	 */
-//	private JTextField phoneNumberText() {
-//		phoneNumberText = new JTextField();
-//		phoneNumberText.setBounds(122, 135, 228, 26);
-//		phoneNumberText.setColumns(10);
-//		return phoneNumberText;
-//	}
-//	/**
-//	 * set up email text field
-//	 * @return email text field
-//	 */
-//	private JTextField emailText() {
-//		emailText = new JTextField();
-//		emailText.setBounds(122, 163, 228, 26);
-//		emailText.setColumns(10);
-//		return emailText;
-//	}
-	
+        
+        public JTextField getPasswordText() {
+            return passwordText;
+        }
+
 	/**
 	 * set up register button
 	 * @return register button
 	 */
 	private JButton registerButton() {
-		JButton registerButton = new JButton("Register");
+		registerButton = new JButton("Register");
 		registerButton.setForeground(new Color(51, 204, 255));
 		registerButton.setBounds(315, 201, 117, 53);
-		registerButton.addActionListener(new registerListener());
 		return registerButton;
 	}
-/**
- * This is the register action listener create a user account in the users list
- * using the provided information	
- * @author Jayden Tan
- *
- */
-	private class registerListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-                    if(Me2Umodel.myUserList.nameTaken(nameText.getText())) {
-                        nameTakenLabel.setVisible(true);                      
-                    } else {
-                        if (idText.getText().length()>0 
-                                && nameText.getText().length()>0
-                                && passwordText.getText().length()>0) {
-                            User newuser = new User(idText.getText(), nameText.getText(),
-                            passwordText.getText(), 0, 1);
-                            Me2Umodel.myUserList.addUser(newuser);
-                            System.out.println("user created");
-                            Me2Umodel.myUserList.serializeUserList();
-                            myFrame.dispose();
-                            Me2Ugui me2u = new Me2Ugui();
-                        }
-                        
-                    }
-		}
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+        
+        public JButton getRegisterButton() {
+            return registerButton;
+        }
+        
+        public void close() {
+            myFrame.dispose();
+        }		
 }

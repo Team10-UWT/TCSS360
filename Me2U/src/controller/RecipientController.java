@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
  */
 public class RecipientController {
     private Inventory inventory;
+    private UserList myUserList;
+    private User myUser;
     private Cart cart;
     private RecipientView recipView;
     private String itemToCheck = new String();
@@ -33,11 +35,12 @@ public class RecipientController {
      * Default constructor. Initializes the model members, deserializes
      * inventory, and prepares the event handlers.
      */
-    public RecipientController(){
-        this.inventory = new Inventory();
-        this.cart = new Cart();
-        this.recipView = new RecipientView();
-        this.inventory.deserializeInventory();
+    public RecipientController(Inventory theInventory, UserList theUserList, User theUser){
+        inventory = theInventory;
+        cart = new Cart();
+        recipView = new RecipientView();
+        myUserList = theUserList;
+        myUser = theUser;
         this.addListeners();
     }
     
@@ -45,6 +48,16 @@ public class RecipientController {
      * Add event handlers to the swing elements in the view.
      */
     private void addListeners(){
+        
+        recipView.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                inventory.serializeInventory();
+                myUserList.serializeUserList();
+                System.exit(0);
+            }
+        });
+        
         this.recipView.getRemoveItemButton().addMouseListener(
             new java.awt.event.MouseAdapter() {
                 @Override
