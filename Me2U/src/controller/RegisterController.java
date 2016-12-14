@@ -54,13 +54,13 @@ public class RegisterController {
                 User newuser = new User(registerView.getIDText().getText(), registerView.getNameText().getText(),
                     registerView.getPasswordText().getText(), 0, 1);
                 myUserList.addUser(newuser);
-                System.out.println("user created");
+                //System.out.println("user created");
                 myUserList.serializeUserList();
                 registerView.close();
                 if (newuser.getType() == 0) {
-                    //AdminController admincontroller = new AdminController(myInventory, myUserList);
+                    AdminController admincontroller = new AdminController(myInventory, myUserList, newuser);
                 } else {
-                    //Me2UController homecontroller = new Me2UController(myInventory, myUserList);
+                    Me2UController homecontroller = new Me2UController(myInventory, myUserList, newuser);
                 }
             }
                         
